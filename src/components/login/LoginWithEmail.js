@@ -1,23 +1,16 @@
 import React, { useState } from "react";
-import {
-  Grid,
-  Typography,
-  InputAdornment,
-  IconButton,
-  Button,
-} from "@material-ui/core";
-import SmartphoneIcon from "@material-ui/icons/Smartphone";
-import VpnKeyIcon from "@material-ui/icons/VpnKey";
-import { useHistory } from "react-router-dom";
+import { Grid, Typography, InputAdornment, Button } from "@material-ui/core";
+
 import TextInput from "../../common/TextInput";
+import { useHistory } from "react-router-dom";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { Visibility, VisibilityOff } from "@material-ui/icons";
 import Divider from "../../common/Divider";
 import { Link } from "react-router-dom";
+import { verifyActions } from "../../redux/auth/actions";
 import { useDispatch } from "react-redux";
-import { loginActions } from "../../redux/auth/actions";
+import { MailOutline } from "@material-ui/icons";
 import Loading from "../../common/Loading";
 
 // import FormikInput from "../../common/FormikInput";
@@ -43,27 +36,17 @@ const useStyles = makeStyles({
   },
 });
 
-export default function Login() {
+export default function LoginWithEmail() {
   const classes = useStyles();
-  const [passwordShown, setPasswordShown] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const dispatch = useDispatch();
   const history = useHistory();
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
 
   const validationSchema = Yup.object().shape({
-    phoneNumber: Yup.string()
-      .required("Phone Number is Required")
-      .matches(/^[0-9]+$/, "Must be only digits")
-      .min(11, "Must be exactly 11 digits")
-      .max(11, "Must be exactly 11 digits"),
-    password: Yup.string()
-      .min(2, "Minimum 2 character")
-      .max(100, "Maximum 100 character")
-      .required("Password is required"),
+    email: Yup.string().email().required("Email  is Required"),
   });
   const initData = {
-    phoneNumber: "",
-    password: "",
+    email: "",
   };
   return (
     <Formik
@@ -71,7 +54,12 @@ export default function Login() {
       initialValues={initData}
       validationSchema={validationSchema}
       onSubmit={(values, { resetForm }) => {
-        dispatch(loginActions(values, setLoading, () => resetForm(initData)));
+        dispatch(
+          verifyActions(values, setLoading, () => {
+            resetForm(initData);
+            history.push("/verify/email");
+          })
+        );
       }}
     >
       {({
@@ -94,51 +82,13 @@ export default function Login() {
                   backgroundColor: "#ddeedd",
                   textAlign: "center",
                 }}
-                placeholder="Enter Your Phone Number"
-                name="phoneNumber"
+                placeholder="Enter Your Email"
+                name="email"
                 margin="normal"
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <SmartphoneIcon />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-
-              <TextInput
-                id="outlined-full-width"
-                style={{
-                  backgroundColor: "#ddeedd",
-                  textAlign: "center",
-                }}
-                placeholder="Password"
-                name="password"
-                margin="normal"
-                type={passwordShown ? "text" : "password"}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <VpnKeyIcon />
-                    </InputAdornment>
-                  ),
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={() => setPasswordShown(!passwordShown)}
-                        edge="end"
-                      >
-                        {passwordShown ? (
-                          <Visibility
-                          // onClick={() => setPasswordShown(!passwordShown)}
-                          />
-                        ) : (
-                          <VisibilityOff
-                          // onClick={() => setPasswordShown(!passwordShown)}
-                          />
-                        )}
-                      </IconButton>
+                      <MailOutline />
                     </InputAdornment>
                   ),
                 }}
@@ -150,20 +100,20 @@ export default function Login() {
                 className={classes.customButton}
                 fullWidth
               >
-                Sign in with password
+                Sign In
               </Button>
 
               {/* {loginError && <Error msg={test} type="danger" />} */}
             </form>
             <Divider>Or</Divider>
             <Button
+              onClick={() => history.push("/")}
               type="submit"
               variant="outlined"
               fullWidth
               className={classes.customButton2}
-              onClick={() => history.push("/loginphone")}
             >
-              Forgot Password? Sign in via other means instead!
+              Sign In wIth Password
             </Button>
             <div className={classes.signUp}>
               <Link

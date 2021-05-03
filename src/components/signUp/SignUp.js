@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import {
   Grid,
   Typography,
-  FormHelperText,
   InputAdornment,
   IconButton,
   Button,
@@ -21,7 +20,7 @@ import {
 import * as Yup from "yup";
 import TextInput from "../../common/TextInput";
 import { useDispatch } from "react-redux";
-import { loginActions } from "../../redux/auth/actions";
+import { registerActions } from "../../redux/auth/actions";
 import Loading from "../../common/Loading";
 
 // import FormikInput from "../../common/FormikInput";
@@ -62,7 +61,7 @@ export default function Login() {
     username: Yup.string()
       .min(2, "Minimum 2 character")
       .max(20, "Maximum 100 character")
-      .required("Username is required"),
+      .required("Name is required"),
   });
   const initData = {
     phoneNumber: "",
@@ -76,7 +75,9 @@ export default function Login() {
       initialValues={initData}
       validationSchema={validationSchema}
       onSubmit={(values, { resetForm }) => {
-        dispatch(loginActions(values, setLoading, () => resetForm(initData)));
+        dispatch(
+          registerActions(values, setLoading, () => resetForm(initData))
+        );
       }}
     >
       {({
@@ -111,7 +112,7 @@ export default function Login() {
                   ),
                 }}
               />
-              <FormHelperText className={classes.emailError}></FormHelperText>
+
               <TextInput
                 id="outlined-full-width"
                 style={{
@@ -130,7 +131,7 @@ export default function Login() {
                   ),
                 }}
               />
-              <FormHelperText className={classes.emailError}></FormHelperText>
+
               <TextInput
                 id="outlined-full-width"
                 style={{
@@ -149,7 +150,6 @@ export default function Login() {
                   ),
                 }}
               />
-              <FormHelperText className={classes.emailError}></FormHelperText>
 
               <TextInput
                 id="outlined-full-width"
@@ -177,11 +177,11 @@ export default function Login() {
                       >
                         {passwordShown ? (
                           <Visibility
-                            onClick={() => setPasswordShown(!passwordShown)}
+                          // onClick={() => setPasswordShown(!passwordShown)}
                           />
                         ) : (
                           <VisibilityOff
-                            onClick={() => setPasswordShown(!passwordShown)}
+                          // onClick={() => setPasswordShown(!passwordShown)}
                           />
                         )}
                       </IconButton>
@@ -190,9 +190,6 @@ export default function Login() {
                 }}
               />
 
-              <FormHelperText className={classes.emailError}>
-                {/* {errors.password && errors.password.message} */}
-              </FormHelperText>
               <Button
                 type="submit"
                 variant="contained"
