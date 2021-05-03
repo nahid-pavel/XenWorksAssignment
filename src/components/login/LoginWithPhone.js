@@ -1,21 +1,20 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Grid,
   Typography,
   TextField,
   FormHelperText,
   InputAdornment,
-  IconButton,
+ 
   Button,
 } from "@material-ui/core";
 import SmartphoneIcon from "@material-ui/icons/Smartphone";
-import VpnKeyIcon from "@material-ui/icons/VpnKey";
-import { useHistory } from "react-router-dom";
+
 
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { Visibility, VisibilityOff } from "@material-ui/icons";
+
 import Divider from "../../common/Divider";
 import { Link } from "react-router-dom";
 
@@ -42,10 +41,9 @@ const useStyles = makeStyles({
   },
 });
 
-export default function Login() {
+export default function LoginWithPhone() {
   const classes = useStyles();
-  const [passwordShown, setPasswordShown] = useState(false);
-  const history = useHistory();
+  
 
   const validationSchema = Yup.object().shape({
     mobileNumber: Yup.string()
@@ -102,48 +100,6 @@ export default function Login() {
               />
               <FormHelperText className={classes.emailError}></FormHelperText>
 
-              <TextField
-                id="outlined-full-width"
-                style={{
-                  backgroundColor: "#ddeedd",
-                  textAlign: "center",
-                }}
-                placeholder="Password"
-                fullWidth
-                margin="normal"
-                variant="outlined"
-                type={passwordShown ? "text" : "password"}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <VpnKeyIcon />
-                    </InputAdornment>
-                  ),
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={() => setPasswordShown(!passwordShown)}
-                        edge="end"
-                      >
-                        {passwordShown ? (
-                          <Visibility
-                            onClick={() => setPasswordShown(!passwordShown)}
-                          />
-                        ) : (
-                          <VisibilityOff
-                            onClick={() => setPasswordShown(!passwordShown)}
-                          />
-                        )}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-
-              <FormHelperText className={classes.emailError}>
-                {/* {errors.password && errors.password.message} */}
-              </FormHelperText>
               <Button
                 type="submit"
                 variant="outlined"
@@ -151,7 +107,7 @@ export default function Login() {
                 color="black"
                 fullWidth
               >
-                Sign in with password
+                Sign In
               </Button>
 
               {/* {loginError && <Error msg={test} type="danger" />} */}
@@ -162,9 +118,8 @@ export default function Login() {
               variant="outlined"
               fullWidth
               className={classes.customButton2}
-              onClick={() => history.push("/loginphone")}
             >
-              Forgot Password? Sign in via other means instead!
+              Sign In wIth Password
             </Button>
             <div className={classes.signUp}>
               <Link
