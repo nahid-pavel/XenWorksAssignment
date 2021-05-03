@@ -2,19 +2,27 @@ import React, { useState } from "react";
 import {
   Grid,
   Typography,
-  TextField,
   FormHelperText,
   InputAdornment,
   IconButton,
   Button,
 } from "@material-ui/core";
 import SmartphoneIcon from "@material-ui/icons/Smartphone";
-import VpnKeyIcon from "@material-ui/icons/VpnKey";
 import { Link } from "react-router-dom";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import { Formik } from "formik";
-import { Visibility, VisibilityOff } from "@material-ui/icons";
+import {
+  MailOutline,
+  PersonOutline,
+  Visibility,
+  VisibilityOff,
+  VpnKey,
+} from "@material-ui/icons";
 import * as Yup from "yup";
+import TextInput from "../../common/TextInput";
+import { useDispatch } from "react-redux";
+import { loginActions } from "../../redux/auth/actions";
+import Loading from "../../common/Loading";
 
 // import FormikInput from "../../common/FormikInput";
 const useStyles = makeStyles({
@@ -42,20 +50,24 @@ const useStyles = makeStyles({
 export default function Login() {
   const classes = useStyles();
   const [passwordShown, setPasswordShown] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const validationSchema = Yup.object().shape({
-    mobileNumber: Yup.string()
-      .required("Mobile no is Required")
+    phoneNumber: Yup.string()
+      .required("Phone Number is Required")
       .matches(/^[0-9]+$/, "Must be only digits")
       .min(11, "Must be exactly 11 digits")
       .max(11, "Must be exactly 11 digits"),
-    password: Yup.string()
+    username: Yup.string()
       .min(2, "Minimum 2 character")
-      .max(100, "Maximum 100 character")
-      .required("Password is required"),
+      .max(20, "Maximum 100 character")
+      .required("Username is required"),
   });
   const initData = {
-    phonenNumber: "",
+    phoneNumber: "",
+    username: "",
+    email: "",
     password: "",
   };
   return (
@@ -63,7 +75,9 @@ export default function Login() {
       enableReinitialize={true}
       initialValues={initData}
       validationSchema={validationSchema}
-      onSubmit={(values, { setSubmitting, resetForm }) => {}}
+      onSubmit={(values, { resetForm }) => {
+        dispatch(loginActions(values, setLoading, () => resetForm(initData)));
+      }}
     >
       {({
         handleSubmit,
@@ -76,18 +90,19 @@ export default function Login() {
       }) => (
         <Grid container justify="center" className={classes.root}>
           <Grid item xs={8} md={5}>
-            <form>
+            <form onSubmit={handleSubmit}>
+              {loading && <Loading />}
               <Typography variant="h4">Create a new account</Typography>
-              <TextField
+              <TextInput
                 id="outlined-full-width"
                 style={{
                   backgroundColor: "#ddeedd",
                   textAlign: "center",
                 }}
                 placeholder="Phone Number(Required)"
-                fullWidth
+                name="phoneNumber"
+                value={values?.phoneNumber}
                 margin="normal"
-                variant="outlined"
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -97,60 +112,60 @@ export default function Login() {
                 }}
               />
               <FormHelperText className={classes.emailError}></FormHelperText>
-              <TextField
+              <TextInput
                 id="outlined-full-width"
                 style={{
                   backgroundColor: "#ddeedd",
                   textAlign: "center",
                 }}
-                placeholder="Name"
-                fullWidth
+                placeholder="Name (Required)"
+                name="username"
+                value={values?.username}
                 margin="normal"
-                variant="outlined"
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <SmartphoneIcon />
+                      <PersonOutline />
                     </InputAdornment>
                   ),
                 }}
               />
               <FormHelperText className={classes.emailError}></FormHelperText>
-              <TextField
+              <TextInput
                 id="outlined-full-width"
                 style={{
                   backgroundColor: "#ddeedd",
                   textAlign: "center",
                 }}
                 placeholder="Email"
-                fullWidth
+                name="email"
+                value={values?.email}
                 margin="normal"
-                variant="outlined"
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <SmartphoneIcon />
+                      <MailOutline />
                     </InputAdornment>
                   ),
                 }}
               />
               <FormHelperText className={classes.emailError}></FormHelperText>
 
-              <TextField
+              <TextInput
                 id="outlined-full-width"
                 style={{
                   backgroundColor: "#ddeedd",
                   textAlign: "center",
                 }}
                 placeholder="Password"
-                fullWidth
                 margin="normal"
-                variant="outlined"
+                name="password"
+                value={values?.password}
                 type={passwordShown ? "text" : "password"}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <VpnKeyIcon />
+                      <VpnKey />
                     </InputAdornment>
                   ),
                   endAdornment: (
@@ -180,9 +195,8 @@ export default function Login() {
               </FormHelperText>
               <Button
                 type="submit"
-                variant="outlined"
+                variant="contained"
                 className={classes.customButton}
-                color="black"
                 fullWidth
               >
                 Sign Up

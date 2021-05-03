@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 import SmartphoneIcon from "@material-ui/icons/Smartphone";
 
-
+import { useHistory } from "react-router-dom";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -43,6 +43,7 @@ const useStyles = makeStyles({
 
 export default function LoginWithPhone() {
   const classes = useStyles();
+  const history = useHistory();
   
 
   const validationSchema = Yup.object().shape({
@@ -114,6 +115,7 @@ export default function LoginWithPhone() {
             </form>
             <Divider>Or</Divider>
             <Button
+              onClick={()=>history.push('/')}
               type="submit"
               variant="outlined"
               fullWidth

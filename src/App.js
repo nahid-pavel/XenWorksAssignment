@@ -4,6 +4,8 @@ import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
 import Login from "./components/login/Login";
 import SignUp from "./components/signUp/SignUp";
 import LoginWithPhone from "./components/login/LoginWithPhone";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
@@ -15,6 +17,7 @@ function App() {
           <Route exact path="/" component={Login} />
         </Switch>
       </Router>
+      <ToastContainer position="bottom-right" />
     </div>
   );
 }
