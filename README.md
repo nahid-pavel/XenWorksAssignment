@@ -1,4 +1,4 @@
-# Getting Started with Create React App
+# Created For Home Assignment
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Live Demo can be found here: [Click To go to Live demo](https://github.com/facebook/create-react-app).
 
