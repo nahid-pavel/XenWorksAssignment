@@ -1,10 +1,5 @@
 import React, { useState } from "react";
-import {
-  Grid,
-  Typography,
-  InputAdornment,
-  Button,
-} from "@material-ui/core";
+import { Grid, Typography, InputAdornment, Button } from "@material-ui/core";
 import SmartphoneIcon from "@material-ui/icons/Smartphone";
 import TextInput from "../../common/TextInput";
 import { useHistory } from "react-router-dom";
@@ -36,7 +31,7 @@ const useStyles = makeStyles({
     fontSize: "16px",
     marginTop: "20px",
     textAlign: "center",
-    texttDecoration: "none",
+    textDecoration: "none",
   },
 });
 

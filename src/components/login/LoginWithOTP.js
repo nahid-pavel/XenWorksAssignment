@@ -31,7 +31,7 @@ const useStyles = makeStyles({
     fontSize: "16px",
     marginTop: "20px",
     textAlign: "center",
-    texttDecoration: "none",
+    textDecoration: "none",
   },
   headerText: {
     justifyContent: "center",
